@@ -18,6 +18,25 @@ def get_hosted_es():
 
     if QuerybookSettings.ELASTICSEARCH_CONNECTION_TYPE == "naive":
         hosted_es = Elasticsearch(hosts=QuerybookSettings.ELASTICSEARCH_HOST)
+    elif QuerybookSettings.ELASTICSEARCH_CONNECTION_TYPE == "basic_auth":
+        verify_certs = True if QuerybookSettings.ELASTICSEARCH_VERIFY_TLS == "true" else False
+        username = QuerybookSettings.ELASTICSEARCH_USERNAME
+        password = QuerybookSettings.ELASTICSEARCH_PASSWORD
+
+        if username is not None:
+            hosted_es = Elasticsearch(
+                hosts=QuerybookSettings.ELASTICSEARCH_HOST,
+                basic_auth=(username, password),
+                use_ssl=True,
+                verify_certs=verify_certs,
+            )
+        else:
+            hosted_es = Elasticsearch(
+                hosts=QuerybookSettings.ELASTICSEARCH_HOST,
+                basic_auth=password,
+                use_ssl=True,
+                verify_certs=verify_certs,
+            )
     elif QuerybookSettings.ELASTICSEARCH_CONNECTION_TYPE == "aws":
         # TODO: generialize aws region setup
         from boto3 import session as boto_session

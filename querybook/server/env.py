@@ -46,7 +46,10 @@ class QuerybookSettings(object):
 
     # Search
     ELASTICSEARCH_HOST = get_env_config("ELASTICSEARCH_HOST", optional=False)
-    ELASTICSEARCH_CONNECTION_TYPE = get_env_config("ELASTICSEARCH_CONNECTION_TYPE")
+    ELASTICSEARCH_CONNECTION_TYPE = get_env_config("ELASTICSEARCH_CONNECTION_TYPE", optional=False)
+    ELASTICSEARCH_VERIFY_TLS = get_env_config("ELASTICSEARCH_VERIFY_TLS", optional=False)
+    ELASTICSEARCH_USERNAME = get_env_config("ELASTICSEARCH_USERNAME")
+    ELASTICSEARCH_PASSWORD = get_env_config("ELASTICSEARCH_PASSWORD")
 
     # Lineage
     DATA_LINEAGE_BACKEND = get_env_config("DATA_LINEAGE_BACKEND")
