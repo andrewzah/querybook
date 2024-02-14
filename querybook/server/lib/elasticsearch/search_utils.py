@@ -18,7 +18,7 @@ def get_hosted_es():
 
     if QuerybookSettings.ELASTICSEARCH_CONNECTION_TYPE == "naive":
         hosted_es = Elasticsearch(hosts=QuerybookSettings.ELASTICSEARCH_HOST)
-    elif QuerybookSettings.ELASTICSEARCH_CONNECTION_TYPE == "basic_auth":
+    elif QuerybookSettings.ELASTICSEARCH_CONNECTION_TYPE == "http_auth":
         verify_certs = True if QuerybookSettings.ELASTICSEARCH_VERIFY_TLS == "true" else False
         username = QuerybookSettings.ELASTICSEARCH_USERNAME
         password = QuerybookSettings.ELASTICSEARCH_PASSWORD
@@ -26,14 +26,14 @@ def get_hosted_es():
         if username is not None:
             hosted_es = Elasticsearch(
                 hosts=QuerybookSettings.ELASTICSEARCH_HOST,
-                basic_auth=(username, password),
+                http_auth=(username, password),
                 use_ssl=True,
                 verify_certs=verify_certs,
             )
         else:
             hosted_es = Elasticsearch(
                 hosts=QuerybookSettings.ELASTICSEARCH_HOST,
-                basic_auth=password,
+                http_auth=password,
                 use_ssl=True,
                 verify_certs=verify_certs,
             )
@@ -55,6 +55,7 @@ def get_hosted_es():
             use_ssl=True,
             verify_certs=True,
         )
+    hosted_es.info()
     return hosted_es
 
 
